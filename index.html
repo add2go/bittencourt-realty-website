@@ -46,6 +46,37 @@
 .editorial-image.equal-portraits .portrait-card img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:center 32%;border:0}
 .editorial-image.equal-portraits .portrait-card:first-child img{object-position:center 38%}
 @media(max-width:600px){.editorial-image.equal-portraits{gap:12px}.editorial-image.equal-portraits .portrait-card{aspect-ratio:3 / 4}}
+
+/* Hero layout: flush to navigation; use the original portrait on smaller screens */
+.hero{padding-top:0}
+.hero-picture{display:block}
+@media (min-width:601px) and (max-width:860px){
+.hero-full{display:grid;grid-template-columns:48% 52%;min-height:0;overflow:hidden}
+.hero-full::before{display:none}
+.hero-picture{grid-row:1;grid-column:2;height:100%;width:100%;overflow:hidden}
+.hero-full-media{position:relative;inset:auto;width:100%;height:100%;object-fit:cover;object-position:center 35%}
+.hero-home-overlay{grid-row:1;grid-column:1;background:var(--pine);min-height:550px;display:flex;align-items:center}
+.hero-home-inner{min-height:0}
+.hero-panel{padding:48px 0;max-width:100%}
+.hero-panel .display{font-size:clamp(35px,4.9vw,50px)}
+.hero-panel .copy{font-size:13px;line-height:1.65}
+.hero-panel .hero-actions{gap:10px}
+.hero-panel .hero-actions .btn{font-size:10px;padding:0 14px}
+}
+@media (max-width:600px){
+.hero-full{display:flex;flex-direction:column;min-height:0;overflow:visible}
+.hero-full::before{display:none}
+.hero-picture{display:block;width:100%;height:auto;background:#e6ded5}
+.hero-full-media{display:block;position:relative;inset:auto;width:100%;height:auto;max-height:none;object-fit:contain;object-position:center center}
+.hero-home-overlay{min-height:0;background:var(--pine);display:block}
+.hero-home-inner{display:block;min-height:0}
+.hero-panel{max-width:100%;padding:30px 0 45px}
+.hero-panel .display{font-size:clamp(37px,9.5vw,51px);margin:12px 0 16px;line-height:1.1}
+.hero-panel .eyebrow{letter-spacing:.19em}
+.hero-panel .copy{font-size:14px;line-height:1.7}
+.hero-panel .hero-actions{margin-top:25px;gap:10px}
+.hero-panel .hero-actions .btn{min-height:48px}
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -125,7 +156,7 @@ function testimonials(t){
     </div></div></section>`;
 }
 function cta(t){return `<section class="cta-section"><div class="container cta-grid"><div><div class="eyebrow">${t.ctaKicker}</div><h2 class="h2">${t.ctaTitle}</h2></div><div><p class="copy">${t.ctaText}</p><div style="margin-top:24px">${link('contact',t.contact)}</div></div></div></section>`;}
-function home(t){return `<section class="hero"><div class="hero-full"><img class="hero-full-media" src="${asset.homeHero}" alt="Rodrigo Cid and Juliana Bittencourt of Bittencourt Realty in an elegant interior" fetchpriority="high"><div class="hero-home-overlay"><div class="container hero-home-inner"><div class="hero-panel"><div class="eyebrow">${t.eyebrow}</div><h1 class="display">${t.heroTitle}</h1><p class="copy">${t.heroText}</p><div class="hero-actions">${link('properties',t.explore)}${link('contact',t.start,'btn light')}</div></div></div></div></div><div class="hero-links"><div class="container"><div class="quick-links"><a href="${url('properties')}">${t.quick[0]}<span>↗</span></a><a href="${url('selling')}">${t.quick[1]}<span>↗</span></a><a href="${url('about')}">${t.quick[2]}<span>↗</span></a></div></div></div></section>${founderIntro(t)}${services(t)}${search(t)}${areas(t)}${people(t)}${testimonials(t)}${articles(t)}${cta(t)}`;}function interior(pageKey,t,title,desc,body){return `<section class="interior-hero has-image"><img class="interior-hero-media" src="${heroFor(pageKey)}" alt="${heroAlt(pageKey)}" loading="eager"><div class="interior-hero-overlay"><div class="container"><div class="interior-copy"><div class="eyebrow">${t.eyebrow}</div><h1 class="h2">${title}</h1><p class="copy">${desc}</p></div></div></div></section>${body}`;}function steps(t,isBuy){const list=isBuy?t.buyingSteps:t.sellingSteps;return `<section class="content-section"><div class="container"><div class="eyebrow">${isBuy?t.buying:t.selling}</div><h2 class="h2">${t.servicesTitle}</h2><div class="journey-grid">${list.map((a,i)=>`<div class="step"><span class="num">0${i+1}</span><h3>${a}</h3><p>${isBuy?t.buyingText:t.sellingText}</p></div>`).join('')}</div></div></section>`;}
+function home(t){return `<section class="hero"><div class="hero-full"><picture class="hero-picture"><source media="(max-width: 860px)" srcset="${asset.founders}"><img class="hero-full-media" src="${asset.homeHero}" alt="Rodrigo Cid and Juliana Bittencourt of Bittencourt Realty in an elegant interior" fetchpriority="high"></picture><div class="hero-home-overlay"><div class="container hero-home-inner"><div class="hero-panel"><div class="eyebrow">${t.eyebrow}</div><h1 class="display">${t.heroTitle}</h1><p class="copy">${t.heroText}</p><div class="hero-actions">${link('properties',t.explore)}${link('contact',t.start,'btn light')}</div></div></div></div></div><div class="hero-links"><div class="container"><div class="quick-links"><a href="${url('properties')}">${t.quick[0]}<span>↗</span></a><a href="${url('selling')}">${t.quick[1]}<span>↗</span></a><a href="${url('about')}">${t.quick[2]}<span>↗</span></a></div></div></div></section>${founderIntro(t)}${services(t)}${search(t)}${areas(t)}${people(t)}${testimonials(t)}${articles(t)}${cta(t)}`;}function interior(pageKey,t,title,desc,body){return `<section class="interior-hero has-image"><img class="interior-hero-media" src="${heroFor(pageKey)}" alt="${heroAlt(pageKey)}" loading="eager"><div class="interior-hero-overlay"><div class="container"><div class="interior-copy"><div class="eyebrow">${t.eyebrow}</div><h1 class="h2">${title}</h1><p class="copy">${desc}</p></div></div></div></section>${body}`;}function steps(t,isBuy){const list=isBuy?t.buyingSteps:t.sellingSteps;return `<section class="content-section"><div class="container"><div class="eyebrow">${isBuy?t.buying:t.selling}</div><h2 class="h2">${t.servicesTitle}</h2><div class="journey-grid">${list.map((a,i)=>`<div class="step"><span class="num">0${i+1}</span><h3>${a}</h3><p>${isBuy?t.buyingText:t.sellingText}</p></div>`).join('')}</div></div></section>`;}
 function contact(t){return interior('contact',t,t.contactHero,t.contactDesc,`<section class="content-section"><div class="container contact-grid"><div><div class="eyebrow">BITTENCOURT REALTY</div><h2 class="h2">${t.contact}</h2><p class="copy">${t.ctaText}</p><div class="contact-method"><h3>${t.schedule}</h3><p>${t.scheduleDesc}</p><button class="btn light" data-schedule="1">${t.schedule} ↗</button></div><div class="contact-method"><h3>${t.whatsapp}</h3><p>${t.whatsappDesc}</p><button class="btn light" disabled>${t.whatsapp}</button></div></div><div class="form-card"><div class="eyebrow">${t.contactForm}</div><h2 class="h3">${t.contactForm}</h2><form id="contact-form"><label for="name">${t.name}</label><input id="name" name="name" required autocomplete="name"><label for="email">${t.email}</label><input id="email" name="email" type="email" required autocomplete="email"><label for="phone">${t.phone}</label><input id="phone" name="phone" type="tel" autocomplete="tel"><label for="topic">${t.topic}</label><select id="topic" name="topic">${t.topicOpt.map(x=>`<option>${x}</option>`).join('')}</select><label for="message">${t.message}</label><textarea id="message" name="message" required></textarea><p class="consent">${t.consent}</p><button type="submit" class="btn">${t.send} ↗</button><div id="form-feedback" class="feedback" role="status"></div></form></div></div></section>`);}
 function articlePage(t,n){const i=Math.max(0,Math.min(2,Number(n)-1));return interior('insights',t,t.articles[i],t.sample,`<section class="content-section"><div class="container"><div class="prose"><a class="back-link" href="${url('insights')}">← ${t.back}</a><div class="article-art" style="margin-top:35px">${art}</div><p>${t.articleSampleText}</p><h2>${t.articles[i]}</h2><p>${t.articleSampleText}</p><p class="not-live">${t.sample} · Sanity CMS integration pending. No market facts or sourced data have been published in this prototype.</p></div></div></section>${cta(t)}`);}function render(){const {lang,page}=current(),t=copy[lang];document.documentElement.lang=lang==='pt'?'pt-BR':'en';const p=page.startsWith('article-')?articlePage(t,page.split('-')[1]):page==='home'?home(t):page==='buying'?interior('buying',t,t.buyingHero,t.buyingDesc,steps(t,true)+cta(t)):page==='selling'?interior('selling',t,t.sellingHero,t.sellingDesc,steps(t,false)+cta(t)):page==='properties'?interior('properties',t,t.propertiesHero,t.propertiesDesc,search(t,true)+cta(t)):page==='about'?interior('about',t,t.aboutHero,t.aboutDesc,founderIntro(t)+people(t)+cta(t)):page==='insights'?interior('insights',t,t.insightsHero,t.insightsDesc,articles(t,true)+cta(t)):page==='contact'?contact(t):home(t);document.getElementById('app').innerHTML=frame(p);document.title=`Bittencourt Realty · ${paths.includes(page)?t.nav[paths.indexOf(page)]:t.nav[5]}`;attach(t);window.scrollTo(0,0)}function attach(t){
 const testimonialRoot=document.getElementById('testimonial-carousel');
